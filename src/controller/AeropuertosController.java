@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import application.Main;
 import dao.DAOAeropuertos;
 import dao.DAOAviones;
 import enums.TipoAeropuerto;
@@ -27,8 +28,18 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyCharacterCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.Mnemonic;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Aeropuerto;
@@ -259,6 +270,7 @@ public class AeropuertosController implements Initializable {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AnadirAeropuerto.fxml"));
 			root = loader.load();
+			cargarFondo(root);
 			AnadirAeropuertoController controladorAnadirAeropuerto = loader.getController();
 			
 			controladorAnadirAeropuerto
@@ -286,6 +298,7 @@ public class AeropuertosController implements Initializable {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AnadirAvion.fxml"));
 			root = loader.load();
+			cargarFondo(root);
 			AnadirAvionController controladorAnadirAvion= loader.getController();
 			
 			controladorAnadirAvion
@@ -295,6 +308,15 @@ public class AeropuertosController implements Initializable {
 			stage.setTitle("AVIONES - AÑADIR AVIÓN");
 			stage.initModality(Modality.WINDOW_MODAL);
 			Scene scene = new Scene(root);
+			
+	    	KeyCharacterCombination kccGuardar = new KeyCharacterCombination("G", KeyCombination.ALT_DOWN);
+	    	Mnemonic mnGuardar = new Mnemonic(controladorAnadirAvion.btnGuardar, kccGuardar);
+	    	scene.addMnemonic(mnGuardar);
+	    	
+	    	KeyCharacterCombination kccCerrar = new KeyCharacterCombination("C", KeyCombination.ALT_DOWN);
+	    	Mnemonic mnCerrar = new Mnemonic(controladorAnadirAvion.btnCancelar, kccCerrar);
+	    	scene.addMnemonic(mnCerrar);
+			
 			stage.setScene(scene);
 			stage.showAndWait();
 		} catch (IOException e) {
@@ -307,6 +329,7 @@ public class AeropuertosController implements Initializable {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ActivarAvion.fxml"));
 			root = loader.load();
+			cargarFondo(root);
 			ActivarAvionController controladorActivarAvion= loader.getController();
 			
 			controladorActivarAvion
@@ -328,6 +351,7 @@ public class AeropuertosController implements Initializable {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BorrarAvion.fxml"));
 			root = loader.load();
+			cargarFondo(root);
 			BorrarAvionController controladorBorrarAvion= loader.getController();
 			
 			controladorBorrarAvion
@@ -342,6 +366,12 @@ public class AeropuertosController implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static void cargarFondo(Pane root) {
+		Image img = new Image(Main.class.getResourceAsStream("/imagenes/fondo.png"));
+		BackgroundImage bi = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, true, true));
+		root.setBackground(new Background(bi));
 	}
 	
 }

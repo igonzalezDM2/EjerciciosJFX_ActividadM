@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -19,6 +20,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.Mnemonic;
 import javafx.stage.Stage;
 import model.Aeropuerto;
 import model.Avion;
@@ -27,12 +32,13 @@ import utilities.Utilidades;
 public class AnadirAvionController implements Initializable {
 	
 	private AeropuertosController controladorPrincipal;
+	private Scene escena;
 
 	@FXML
-    private Button btnCancelar;
+    Button btnCancelar;
 
     @FXML
-    private Button btnGuardar;
+    Button btnGuardar;
 
     @FXML
     private ComboBox<Aeropuerto> cbAeropuerto;
@@ -58,6 +64,10 @@ public class AnadirAvionController implements Initializable {
     public void setControladorPrincipal(AeropuertosController controladorPrincipal) {
 		this.controladorPrincipal = controladorPrincipal;
 	}
+    
+    public void setEscena(Scene escena) {
+    	this.escena = escena;
+    }
 
     @FXML
     void cancelar(ActionEvent event) {
