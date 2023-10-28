@@ -1,14 +1,13 @@
 package utilities;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import enums.TipoAeropuerto;
 import excepciones.AeropuertosException;
-import javafx.scene.control.TextField;
 import model.Aeropuerto;
 import model.Avion;
 import model.Direccion;
@@ -20,7 +19,7 @@ public class Utilidades {
 	}
 	
 	public static Aeropuerto mapAeropuerto(ResultSet rs) throws AeropuertosException {
-		try {
+		try (InputStream is = rs.getBinaryStream("imagen")){
 			Aeropuerto aeropuerto = new Aeropuerto()
 					.setId(rs.getInt("id"))
 					.setNombre(rs.getString("nombre"))
@@ -29,6 +28,7 @@ public class Utilidades {
 					.setFinanciacion(rs.getDouble("financiacion"))
 					.setNumTrabajadores(rs.getInt("numtrabajadores"))
 					.setNumeroSocios(rs.getInt("numerosocios"))
+					.setImagen(is != null ? is.readAllBytes() : null)
 					.setDireccion(new Direccion()
 							.setCalle(rs.getString("calle"))
 							.setCiudad(rs.getString("ciudad"))
@@ -44,7 +44,7 @@ public class Utilidades {
 			
 			return aeropuerto;
 			
-		} catch (SQLException e) {
+		} catch (SQLException | IOException e) {
 			throw new AeropuertosException(e);
 		}
 	}

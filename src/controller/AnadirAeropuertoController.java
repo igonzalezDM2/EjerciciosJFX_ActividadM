@@ -3,6 +3,13 @@ package controller;
 import static utilities.Utilidades.parseDouble;
 import static utilities.Utilidades.parseInt;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -26,10 +33,13 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCharacterCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.Mnemonic;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Aeropuerto;
 import model.Direccion;
@@ -40,12 +50,20 @@ public class AnadirAeropuertoController implements Initializable {
 	private Aeropuerto seleccionado;
 	private AeropuertosController controladorPrincipal;
 	private Scene escena;
+	
+	private byte[] imagenCargada;
 
     @FXML
     private Button btnCancelar;
 
     @FXML
     private Button btnGuardar;
+    
+    @FXML
+    private Button btnImagen;
+    
+    @FXML
+    private ImageView ivImagen;
 
     @FXML
     private GridPane gridVariable;
@@ -122,6 +140,29 @@ public class AnadirAeropuertoController implements Initializable {
     		e.printStackTrace();
 		}
     }
+    
+    @FXML
+    void cargarImagen(ActionEvent event) {
+    	//TODO: sacar el filechooser
+    	FileChooser fc = new FileChooser();
+    	fc.setInitialDirectory(new File(System.getProperty("user.dir")));
+    	fc.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png"));
+    	File archivo = fc.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
+    	if (archivo != null) {
+    		try (FileInputStream fis = new FileInputStream(archivo)) {
+    			imagenCargada = fis.readAllBytes();
+				seleccionado.setImagen(imagenCargada);
+				ponerImagen();
+			} catch (FileNotFoundException e) {
+	    		Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+	    		alert.showAndWait();
+	    		e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
+    	
+    }
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -155,6 +196,7 @@ public class AnadirAeropuertoController implements Initializable {
 	public AnadirAeropuertoController setSeleccionado(Aeropuerto seleccionado) {
 		this.seleccionado = seleccionado;
 		rellenarEdicion();
+		ponerImagen();
 		return this;
 	}
 	
@@ -184,7 +226,8 @@ public class AnadirAeropuertoController implements Initializable {
 						.setNumero(parseInt(tfNumero.getText()))
 						)
 				.setAnioInauguracion(parseInt(tfAno.getText()))
-				.setCapacidad(parseInt(tfCapacidad.getText()));
+				.setCapacidad(parseInt(tfCapacidad.getText()))
+				.setImagen(imagenCargada);
 		if (rbPrivado.isSelected()) {
 			aeropuerto.setTipo(TipoAeropuerto.PRIVADO);
 			aeropuerto.setNumeroSocios(parseInt(tfVariable1.getText()));
@@ -221,6 +264,18 @@ public class AnadirAeropuertoController implements Initializable {
 			} else {
 				tfVariable1.setText(String.format("%.2f", seleccionado.getFinanciacion()));
 				tfVariable2.setText(Integer.toString(seleccionado.getNumTrabajadores()));
+			}
+		}
+	}
+	
+	private void ponerImagen() {
+		if (seleccionado != null && seleccionado.getImagen() != null) {
+			ivImagen.setImage(new Image(new ByteArrayInputStream(seleccionado.getImagen())));
+			try (OutputStream os = new FileOutputStream("/home/jiraiya/Descargas/imageprueba.jpg")){
+				os.write(seleccionado.getImagen());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}

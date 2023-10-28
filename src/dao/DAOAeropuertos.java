@@ -1,7 +1,6 @@
 package dao;
 
 import java.io.ByteArrayInputStream;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,6 +33,7 @@ public class DAOAeropuertos extends DAOBase{
 		try(Connection con = getConexion()) {
 			StringBuilder sb = new StringBuilder("select aeropuertos.id as id, "
 					+ "aeropuertos.nombre as nombre, "
+					+ "aeropuertos.imagen as imagen, "
 					+ "direcciones.pais as pais, "
 					+ "direcciones.ciudad as ciudad, "
 					+ "direcciones.id as direccionid, "
@@ -129,9 +129,9 @@ public class DAOAeropuertos extends DAOBase{
 						psAeropuerto.setInt(3, aeropuerto.getCapacidad());
 						psAeropuerto.setInt(4, idDireccion);
 						if (aeropuerto.getImagen() != null) {							
-							psAeropuerto.setBlob(5, new ByteArrayInputStream(aeropuerto.getImagen()));
+							psAeropuerto.setBinaryStream(5, new ByteArrayInputStream(aeropuerto.getImagen()));
 						} else {
-							psAeropuerto.setBlob(5, (Blob) null);
+							psAeropuerto.setBinaryStream(5, null);
 						}
 						psAeropuerto.executeUpdate();
 						
@@ -220,10 +220,10 @@ public class DAOAeropuertos extends DAOBase{
 						psAeropuerto.setInt(2, aeropuerto.getAnioInauguracion());
 						psAeropuerto.setInt(3, aeropuerto.getCapacidad());
 						psAeropuerto.setInt(4, idDireccion);
-						if (aeropuerto.getImagen() != null) {							
-							psAeropuerto.setBlob(5, new ByteArrayInputStream(aeropuerto.getImagen()));
+						if (aeropuerto.getImagen() != null) {	
+							psAeropuerto.setBinaryStream(5, new ByteArrayInputStream(aeropuerto.getImagen()));
 						} else {
-							psAeropuerto.setBlob(5, (Blob) null);
+							psAeropuerto.setBinaryStream(5, null);
 						}
 						psAeropuerto.setInt(6, aeropuerto.getId());
 						

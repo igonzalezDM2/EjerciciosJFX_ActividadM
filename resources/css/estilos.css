@@ -2,3 +2,7 @@
 	-fx-background-radius: 100;
 	-fx-border-radius: 100;
 }
+
+#botonImagen {
+	-fx-background-color: green;
+}
