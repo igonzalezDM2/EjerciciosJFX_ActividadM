@@ -11,18 +11,22 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCharacterCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.Mnemonic;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import model.Aeropuerto;
 import model.Avion;
 
 public class BorrarAvionController implements Initializable {
+	
+	private Scene escena;
 
     @FXML
     private Button btnCancelar;
@@ -90,4 +94,15 @@ public class BorrarAvionController implements Initializable {
 		}
 	}
 
+	public void setEscena(Scene escena) {
+		this.escena = escena;
+    	KeyCharacterCombination kccGuardar = new KeyCharacterCombination("G", KeyCombination.ALT_DOWN);
+    	Mnemonic mnGuardar = new Mnemonic(btnBorrar, kccGuardar);
+    	escena.addMnemonic(mnGuardar);
+    	
+    	KeyCharacterCombination kccCerrar = new KeyCharacterCombination("C", KeyCombination.ALT_DOWN);
+    	Mnemonic mnCerrar = new Mnemonic(btnCancelar, kccCerrar);
+    	escena.addMnemonic(mnCerrar);
+	}
+	
 }

@@ -20,6 +20,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCharacterCombination;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -35,10 +36,10 @@ public class AnadirAvionController implements Initializable {
 	private Scene escena;
 
 	@FXML
-    Button btnCancelar;
+    private Button btnCancelar;
 
     @FXML
-    Button btnGuardar;
+    private Button btnGuardar;
 
     @FXML
     private ComboBox<Aeropuerto> cbAeropuerto;
@@ -67,6 +68,13 @@ public class AnadirAvionController implements Initializable {
     
     public void setEscena(Scene escena) {
     	this.escena = escena;
+    	KeyCharacterCombination kccGuardar = new KeyCharacterCombination("G", KeyCombination.ALT_DOWN);
+    	Mnemonic mnGuardar = new Mnemonic(btnGuardar, kccGuardar);
+    	escena.addMnemonic(mnGuardar);
+    	
+    	KeyCharacterCombination kccCerrar = new KeyCharacterCombination("C", KeyCombination.ALT_DOWN);
+    	Mnemonic mnCerrar = new Mnemonic(btnCancelar, kccCerrar);
+    	escena.addMnemonic(mnCerrar);
     }
 
     @FXML

@@ -70,6 +70,7 @@ public class Main extends Application {
 		GridPane.setColumnIndex(btnLogin, 0);
 		GridPane.setColumnSpan(btnLogin, 2);
 		GridPane.setHalignment(btnLogin, HPos.CENTER);
+		btnLogin.setDefaultButton(true);
 		
 		gpLogin.getChildren().addAll(labelUser, btnLogin, labelPass, tfUser, pfPass);
 		gpLogin.setAlignment(Pos.CENTER);

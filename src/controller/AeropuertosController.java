@@ -21,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
@@ -29,10 +30,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCharacterCombination;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.Mnemonic;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -205,6 +204,12 @@ public class AeropuertosController implements Initializable {
 		tcFinanciacion.setCellValueFactory(new PropertyValueFactory<Aeropuerto, Double>("financiacion"));
 		tcNumTrabajadores.setCellValueFactory(new PropertyValueFactory<Aeropuerto, Integer>("numTrabajadores"));
 		
+		MenuItem miEditar = new MenuItem("Editar");
+		miEditar.setOnAction(ac -> abrirEditor(tvAeropuertos.getSelectionModel().getSelectedItem()));
+		MenuItem miBorrar = new MenuItem("Borrar");
+		miBorrar.setOnAction(ac -> borrarAeropuerto(ac));
+		tvAeropuertos.setContextMenu(new ContextMenu(miEditar, miBorrar));
+		
 		//PARA ESTOS CAMPOS HAY QUE ACCEDER A LA PROPIEDAD DIRECCIÓN, POR LO QUE USO CALLBACKS
 		tcCiudad.setCellValueFactory(param -> {
 			Aeropuerto aeropuerto = param.getValue();
@@ -232,6 +237,17 @@ public class AeropuertosController implements Initializable {
 		});
 		
 		tipoAeropuerto.selectedToggleProperty().addListener(e -> filtrarFilas());
+		
+		tvAeropuertos.setOnMouseClicked(ev -> {
+			Aeropuerto aeropuerto = tvAeropuertos.getSelectionModel().getSelectedItem();
+			//ABRIR INFO CON DOBLE CLICK
+			if (aeropuerto != null &&
+				MouseButton.PRIMARY.equals(ev.getButton()) &&
+				ev.getClickCount() == 2) {
+				mostrarInfoAeropuerto(null);
+				//SACAR MENÚ CONTEXTUAL
+			}
+		});
 		
 		//PARA CARGAR POR PRIMERA VEZ
 		filtrarFilas();
@@ -286,6 +302,7 @@ public class AeropuertosController implements Initializable {
 			}
 			stage.initModality(Modality.WINDOW_MODAL);
 			Scene scene = new Scene(root);
+			controladorAnadirAeropuerto.setEscena(scene);
 			stage.setScene(scene);
 			stage.showAndWait();
 		} catch (IOException e) {
@@ -308,15 +325,7 @@ public class AeropuertosController implements Initializable {
 			stage.setTitle("AVIONES - AÑADIR AVIÓN");
 			stage.initModality(Modality.WINDOW_MODAL);
 			Scene scene = new Scene(root);
-			
-	    	KeyCharacterCombination kccGuardar = new KeyCharacterCombination("G", KeyCombination.ALT_DOWN);
-	    	Mnemonic mnGuardar = new Mnemonic(controladorAnadirAvion.btnGuardar, kccGuardar);
-	    	scene.addMnemonic(mnGuardar);
-	    	
-	    	KeyCharacterCombination kccCerrar = new KeyCharacterCombination("C", KeyCombination.ALT_DOWN);
-	    	Mnemonic mnCerrar = new Mnemonic(controladorAnadirAvion.btnCancelar, kccCerrar);
-	    	scene.addMnemonic(mnCerrar);
-			
+			controladorAnadirAvion.setEscena(scene);
 			stage.setScene(scene);
 			stage.showAndWait();
 		} catch (IOException e) {
@@ -339,6 +348,7 @@ public class AeropuertosController implements Initializable {
 			stage.setTitle("AVIONES - ACTIVAR/DESACTIVAR AVIÓN");
 			stage.initModality(Modality.WINDOW_MODAL);
 			Scene scene = new Scene(root);
+			controladorActivarAvion.setEscena(scene);
 			stage.setScene(scene);
 			stage.showAndWait();
 		} catch (IOException e) {
@@ -361,6 +371,7 @@ public class AeropuertosController implements Initializable {
 			stage.setTitle("AVIONES - LOGIN");
 			stage.initModality(Modality.WINDOW_MODAL);
 			Scene scene = new Scene(root);
+			controladorBorrarAvion.setEscena(scene);
 			stage.setScene(scene);
 			stage.showAndWait();
 		} catch (IOException e) {

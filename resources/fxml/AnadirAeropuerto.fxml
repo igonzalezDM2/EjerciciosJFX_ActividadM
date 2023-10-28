@@ -79,11 +79,11 @@
             <TextField fx:id="tfVariable2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="116.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="20.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <children>
-                  <Button fx:id="btnGuardar" mnemonicParsing="false" onAction="#guardar" text="Guardar">
+                  <Button fx:id="btnGuardar" defaultButton="true" mnemonicParsing="false" onAction="#guardar" text="Guardar">
                      <graphic>
                         <FontIcon iconLiteral="far-save" />
                      </graphic></Button>
-                  <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#cancelar" text="Cancelar">
+                  <Button fx:id="btnCancelar" cancelButton="true" mnemonicParsing="false" onAction="#cancelar" text="Cancelar">
                      <graphic>
                         <FontIcon iconLiteral="far-times-circle" />
                      </graphic></Button>
